@@ -82,7 +82,9 @@ void mainsystem(int width, int height)
 	SetFontSize(35);
 	int FontHandle = CreateFontToHandle(NULL, 40, 3);
 	int SELECT_GRAPH = Arisa_Meido;
-	int SELECT_WORD = 4;
+	int SELECT_WORD = 6;
+	time_t now = time(NULL);
+	struct tm* pnow = localtime(&now);
 	POINT po;
 
 	static char Serifu[][100] = {
@@ -92,6 +94,7 @@ void mainsystem(int width, int height)
 			u8"なでなで検知\nいい感じ",
 			u8"三行用の\nテスト\nしちゃう？！",
 			u8"Адкий\nлюбитель\nженских\nножек",
+			u8"うおおおおおおお\nこれでどうじゃあああ!!",
 	};
 
 	while (ProcessMessage() == 0)
@@ -100,10 +103,18 @@ void mainsystem(int width, int height)
 		DrawGraph(width - 250, height - 450, SELECT_GRAPH,TRUE);//キャラ描画
 		DrawGraph(width - 400, height - 650, fukidashi, TRUE);//吹き出し描写
 		///\nの数によって行数を判別//
-		if (Enter_chk(Serifu[SELECT_WORD]) == 1)
+		if (Enter_chk(Serifu[SELECT_WORD]) == 1) 
+		{
+			SetFontSize(35);
 			DrawString(width - 365, height - 540, Serifu[SELECT_WORD], Cr);//台詞描写１行
-		else if(Enter_chk(Serifu[SELECT_WORD]) == 2)
+		}
+			
+		else if (Enter_chk(Serifu[SELECT_WORD]) == 2) 
+		{
+			SetFontSize(35);
 			DrawString(width - 365, height - 560, Serifu[SELECT_WORD], Cr);//台詞描写２行
+		}
+			
 		else if (Enter_chk(Serifu[SELECT_WORD]) == 3)
 		{
 			SetFontSize(30);
@@ -135,13 +146,13 @@ void mainsystem(int width, int height)
 			if (po.x >= width - 250 and po.y >= height - 450)
 			{
 				//SELECT_GRAPH = Arisa_Seifuku;
-				DWORD start_time = ::GetTickCount();
+				DWORD start_time = ::GetTickCount64();
 				DWORD now_time = NULL;
 				int move_distance = 0;
 				int defalt_point = po.x;
 				while (now_time < 500)//マウスの移動距離計算
 				{
-					now_time = ::GetTickCount() - start_time;
+					now_time = ::GetTickCount64() - start_time;
 					Sleep(5);
 					move_distance += abs(po.x-defalt_point);
 					GetCursorPos(&po);
